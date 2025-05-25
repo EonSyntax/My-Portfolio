@@ -60,6 +60,11 @@
 /*--------------------------------------------------------------
 # General Styling & Shared Classes
 --------------------------------------------------------------*/
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--default-color);
   background-color: var(--background-color);
@@ -1570,6 +1575,24 @@ section,
   margin-right: 8px;
   color: var(--accent-color);
 }
+
+#hero,
+#about,
+#skills,
+#portfolio,
+#services,
+#contact {
+  scroll-margin-top: 35px; /* Adjust based on your navbar height */
+}
+
+/* @media (max-width: 768px) {
+  #about,
+  #skills,
+  #portfolio,
+  #services,
+  #contact {
+    scroll-margin-top: 120px; /* 53
+} */
 
 /*--------------------------------------------------------------
 # Starter Section Section

@@ -21,6 +21,8 @@
   }
   headerToggleBtn.addEventListener('click', headerToggle);
 
+
+  
   /**
    * Hide mobile nav on same-page/hash links
    */
@@ -205,27 +207,27 @@
   });
 
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.getElementById("menuToggle");
-    const header = document.getElementById("header");
+//   document.addEventListener("DOMContentLoaded", function () {
+//     const menuToggle = document.getElementById("menuToggle");
+//     const header = document.getElementById("header");
 
-    menuToggle.addEventListener("click", function () {
-        header.classList.toggle("header-show");
-    });
-});
+//     menuToggle.addEventListener("click", function () {
+//         header.classList.toggle("header-show");
+//     });
+// });
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  const menuToggle = document.querySelector(".header-toggle"); // Ensure correct selector
-  const header = document.querySelector(".header");
+// document.addEventListener("DOMContentLoaded", function () {
+//   const menuToggle = document.querySelector(".header-toggle"); // Ensure correct selector
+//   const header = document.querySelector(".header");
 
-  if (menuToggle && header) {
-      menuToggle.addEventListener("click", function () {
-          header.classList.toggle("header-show");
-      });
-  }
-});
+//   if (menuToggle && header) {
+//       menuToggle.addEventListener("click", function () {
+//           header.classList.toggle("header-show");
+//       });
+//   }
+// });
 
 
 
@@ -381,3 +383,36 @@ document.addEventListener("DOMContentLoaded", () => {
     btnText.textContent = "Send Message";
     btnSpinner.classList.add('hidden');
   });
+
+
+
+  // Script to stop extra gap after navbar from #hero section to other sections
+  document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+  link.addEventListener('click', function (e) {
+    const targetId = this.getAttribute('href');
+    const target = document.querySelector(targetId);
+
+    if (target) {
+      e.preventDefault();
+
+      const currentScrollY = window.scrollY;
+
+      // If we're at the top, trigger scroll to activate navbar shrink
+      if (currentScrollY === 0) {
+        window.scrollTo({ top: 1 });
+
+        // Wait for navbar to visually update (longer delay)
+        setTimeout(() => {
+          const navHeight = document.getElementById("mainNavbar").offsetHeight;
+          const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 10;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 100); // You can try increasing to 150ms if needed
+      } else {
+        // Already scrolled — jump directly with offset
+        const navHeight = document.getElementById("mainNavbar").offsetHeight;
+        const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 10;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  });
+});

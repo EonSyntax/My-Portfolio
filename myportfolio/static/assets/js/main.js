@@ -21,17 +21,38 @@
   }
   headerToggleBtn.addEventListener('click', headerToggle);
 
+
+
   /**
    * Hide mobile nav on same-page/hash links
    */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.header-show')) {
-        headerToggle();
-      }
+  document.querySelectorAll('#navmenu a[href^="#"]').forEach(navLink => {
+  navLink.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href');
+    const target = document.querySelector(targetId);
+
+    if (!target) return;
+
+    e.preventDefault();
+
+    
+
+    // Smooth scroll to the section with offset
+    const scrollMarginTop = parseInt(getComputedStyle(target).scrollMarginTop) || 35;
+    window.scrollTo({
+      top: target.offsetTop - scrollMarginTop,
+      behavior: 'smooth'
     });
 
+    // Update URL hash manually
+    history.pushState(null, null, targetId);
+
+    // Close mobile nav if open
+    if (document.querySelector('#header').classList.contains('header-show')) {
+      headerToggle();
+    }
   });
+});
 
   /**
    * Toggle mobile nav dropdowns
@@ -205,27 +226,27 @@
   });
 
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.getElementById("menuToggle");
-    const header = document.getElementById("header");
+//   document.addEventListener("DOMContentLoaded", function () {
+//     const menuToggle = document.getElementById("menuToggle");
+//     const header = document.getElementById("header");
 
-    menuToggle.addEventListener("click", function () {
-        header.classList.toggle("header-show");
-    });
-});
+//     menuToggle.addEventListener("click", function () {
+//         header.classList.toggle("header-show");
+//     });
+// });
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  const menuToggle = document.querySelector(".header-toggle"); // Ensure correct selector
-  const header = document.querySelector(".header");
+// document.addEventListener("DOMContentLoaded", function () {
+//   const menuToggle = document.querySelector(".header-toggle"); // Ensure correct selector
+//   const header = document.querySelector(".header");
 
-  if (menuToggle && header) {
-      menuToggle.addEventListener("click", function () {
-          header.classList.toggle("header-show");
-      });
-  }
-});
+//   if (menuToggle && header) {
+//       menuToggle.addEventListener("click", function () {
+//           header.classList.toggle("header-show");
+//       });
+//   }
+// });
 
 
 
@@ -381,3 +402,20 @@ document.addEventListener("DOMContentLoaded", () => {
     btnText.textContent = "Send Message";
     btnSpinner.classList.add('hidden');
   });
+
+
+  document.querySelectorAll('.navbar-nav .nav-link[href^="#"]').forEach(link => {
+  link.addEventListener('click', function (e) {
+    const targetId = this.getAttribute('href');
+    const target = document.querySelector(targetId);
+
+    if (!target) return;
+
+    e.preventDefault();
+
+    target.scrollIntoView({ behavior: 'smooth' });
+
+    // Update the URL hash manually
+    history.pushState(null, null, targetId);
+  });
+});
