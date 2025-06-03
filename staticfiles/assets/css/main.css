@@ -60,6 +60,11 @@
 /*--------------------------------------------------------------
 # General Styling & Shared Classes
 --------------------------------------------------------------*/
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--default-color);
   background-color: var(--background-color);
@@ -1571,55 +1576,24 @@ section,
   color: var(--accent-color);
 }
 
-#about{
-  scroll-margin-top: 30px; /* Adjust based on your navbar height */
+#hero,
+#about,
+#skills,
+#portfolio,
+#services,
+#contact {
+  scroll-margin-top: 35px; /* Adjust based on your navbar height */
 }
 
-@media (max-width: 768px) {
-  #about{
-    scroll-margin-top: 38px;
-  }
-}
-
-#skills{
-  scroll-margin-top: 30px; /* Adjust based on your navbar height */
-}
-
-@media (max-width: 768px) {
-  #skills{
-    scroll-margin-top: 38px;
-  }
-}
-
-#portfolio{
-  scroll-margin-top: 30px; /* Adjust based on your navbar height */
-}
-
-@media (max-width: 768px) {
-  #portfolio{
-    scroll-margin-top: 38px;
-  }
-}
-
-#services{
-  scroll-margin-top: 30px; /* Adjust based on your navbar height */
-}
-
-@media (max-width: 768px) {
-  #services{
-    scroll-margin-top: 38px;
-  }
-}
-
-#contact{
-  scroll-margin-top: 30px; /* Adjust based on your navbar height */
-}
-
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
+  #about,
+  #skills,
+  #portfolio,
+  #services,
   #contact {
-    scroll-margin-top: 38px;
-  }
-}
+    scroll-margin-top: 120px; /* 53
+} */
+
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/

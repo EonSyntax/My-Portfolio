@@ -22,18 +22,37 @@
   headerToggleBtn.addEventListener('click', headerToggle);
 
 
-  
+
   /**
    * Hide mobile nav on same-page/hash links
    */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.header-show')) {
-        headerToggle();
-      }
+  document.querySelectorAll('#navmenu a[href^="#"]').forEach(navLink => {
+  navLink.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href');
+    const target = document.querySelector(targetId);
+
+    if (!target) return;
+
+    e.preventDefault();
+
+    
+
+    // Smooth scroll to the section with offset
+    const scrollMarginTop = parseInt(getComputedStyle(target).scrollMarginTop) || 35;
+    window.scrollTo({
+      top: target.offsetTop - scrollMarginTop,
+      behavior: 'smooth'
     });
 
+    // Update URL hash manually
+    history.pushState(null, null, targetId);
+
+    // Close mobile nav if open
+    if (document.querySelector('#header').classList.contains('header-show')) {
+      headerToggle();
+    }
   });
+});
 
   /**
    * Toggle mobile nav dropdowns
@@ -385,34 +404,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-
-  // Script to stop extra gap after navbar from #hero section to other sections
-  document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+  document.querySelectorAll('.navbar-nav .nav-link[href^="#"]').forEach(link => {
   link.addEventListener('click', function (e) {
     const targetId = this.getAttribute('href');
     const target = document.querySelector(targetId);
 
-    if (target) {
-      e.preventDefault();
+    if (!target) return;
 
-      const currentScrollY = window.scrollY;
+    e.preventDefault();
 
-      // If we're at the top, trigger scroll to activate navbar shrink
-      if (currentScrollY === 0) {
-        window.scrollTo({ top: 1 });
+    target.scrollIntoView({ behavior: 'smooth' });
 
-        // Wait for navbar to visually update (longer delay)
-        setTimeout(() => {
-          const navHeight = document.getElementById("mainNavbar").offsetHeight;
-          const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 10;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }, 100); // You can try increasing to 150ms if needed
-      } else {
-        // Already scrolled — jump directly with offset
-        const navHeight = document.getElementById("mainNavbar").offsetHeight;
-        const y = target.getBoundingClientRect().top + window.scrollY - navHeight - 10;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    }
+    // Update the URL hash manually
+    history.pushState(null, null, targetId);
   });
 });
