@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from .models import Review_Section, HeroBackgroundImage
+from django.http import HttpResponse
+from django.db import connection
+
+
 
 def index(request):
     reviewss = Review_Section.objects.all()
@@ -12,6 +16,16 @@ def index(request):
         'reviewss': reviewss,
         'hero_images': hero_image_urls  # Pass only the URLs
     })
+
+# Live webpage uptime update for render keep awake
+def healthz(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        # database is up
+        return HttpResponse("OK", status=200)
+    except Exception:
+        return HttpResponse("DB Error", status=500)
 
 
 # hero-background-image
