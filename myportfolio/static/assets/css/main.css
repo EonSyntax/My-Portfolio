@@ -438,13 +438,42 @@ h6 {
 #preloader {
   position: fixed;
   inset: 0;
-  z-index: 999999;
-  overflow: hidden;
-  background: var(--background-color);
-  transition: all 0.6s ease-out;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white; /* or your preferred background */
 }
 
-#preloader:before {
+.loader-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #0563bb;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+
+#preloader img {
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* #preloader:before {
   content: "";
   position: fixed;
   top: calc(50% - 30px);
@@ -465,7 +494,9 @@ h6 {
   100% {
     transform: rotate(360deg);
   }
-}
+} */
+
+
 
 /*--------------------------------------------------------------
 # Scroll Top Button

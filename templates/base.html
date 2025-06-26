@@ -36,8 +36,13 @@
   <!-- The background images will be dynamically set by JavaScript -->
 </div>
 {% endblock %}
+
+
 <!-- Preloader -->
-<div id="preloader"></div>
+<div id="preloader">
+  <div class="loader-ring"></div>
+  <img src="{% static 'assets/img/logo.png' %}" />
+</div>
 
 
 <script>

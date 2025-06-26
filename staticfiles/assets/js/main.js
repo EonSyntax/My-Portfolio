@@ -76,6 +76,8 @@
     });
   }
 
+
+  
   /**
    * Scroll top button
    */
