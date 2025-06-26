@@ -448,7 +448,7 @@ h6 {
 .loader-ring {
   position: absolute;
   width: 120px;
-  height: 100px;
+  height: 120px;
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #0563bb;
   border-radius: 50%;
