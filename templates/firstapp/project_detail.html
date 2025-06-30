@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+{% load custom_filters %}
+
+<body class="portfolio-details-page">
+
+  {% include 'includes/navbar.html'%}
+
+  {% include 'includes/sidebar.html'%}
+
+
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade" style="padding-top: 80px;">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="current">Project Detail</li>
+          </ol>
+        </nav>
+        <h1>Project Detail</h1>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Portfolio Detail Section -->
+    <section id="portfolio-details" class="portfolio-details section">
+
+      <div class="container" data-aos="fade-up">
+
+        <div class="portfolio-details-slider swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "navigation": {
+                "nextEl": ".swiper-button-next",
+                "prevEl": ".swiper-button-prev"
+              },
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              }
+            }
+          </script>
+          <div class="swiper-wrapper align-items-center">
+            {% for img in project.images.all %}
+            <div class="swiper-slide">
+              <img src="{{ img.image.url }}" alt="">
+            </div>
+            {% endfor %}
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+        <div class="row justify-content-between gy-4 mt-4">
+
+          <div class="col-lg-8" data-aos="fade-up">
+            <div class="portfolio-description">
+              <h2>{{ project.project_name }}</h2>
+              <p>
+                {{ project.full_description }}
+              </p>
+
+              {% if reviews %}
+                {% for review in reviews %}
+                <div class="testimonial-item border p-3 mb-4 rounded shadow-sm">
+                  <h4 class="mb-1">Client Testimony</h4>
+                  <p class="mt-2 text-break" style="word-break: break-word;">
+                    <i class="bi bi-quote quote-icon-left text-primary"></i>
+                    {{ review.review }}
+                    <i class="bi bi-quote quote-icon-right text-primary"></i>
+                  </p>
+                  <div class="d-flex align-items-center mb-2">
+                    {% if review.photo %}
+                      <img src="{{ review.photo.url }}" alt="Client Photo" class="rounded-circle me-3" style="width: 70px; height: 70px; object-fit: cover;">
+                    {% endif %}
+                    <div>
+                      <h5 class="mb-0">{{ review.first_name }} {{ review.last_name }}</h5>
+                      <small class="text-muted">{{ review.designation }}</small>
+                      <div class="stars text-warning fs-5">
+                        {{ review.rating|stars }}
+                      </div>
+                    </div>
+                  </div>
+                
+                
+                </div>
+
+                  {% endfor %}
+                {% else %}
+                  <p>No reviews available for this project.</p>
+                {% endif %}
+                
+            </div>
+          </div>
+
+          <div class="col-lg-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong> {{ project.category }}</li>
+                <li><strong>Client</strong> {{ project.client_brand }}</li>
+                <li><strong>Project Launch date</strong> {{ project.launch_date }}</li>
+                <li><strong>Project URL</strong> <a href="{{ project.project_url }}"target="_blank">{{ project.project_url }}</a></li>
+                <li><a href="{{ project.project_url }}" class="btn-visit align-self-start">Visit Website</a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Portfolio Details Section -->
+
+  </main>
+
+{% include 'includes/footer.html'%}
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% endblock %}

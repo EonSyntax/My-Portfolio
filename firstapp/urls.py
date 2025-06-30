@@ -21,5 +21,6 @@ from firstapp.views import healthz
 urlpatterns = [
     path('', views.index, name='index'),
     path("healthz/", healthz, name="healthz"),
+    path('projects/<int:pk>/', views.project_detail, name='project_detail'),
 ]
 
