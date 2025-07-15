@@ -13,10 +13,14 @@ def index(request):
     # Generate secure URLs
     hero_image_urls = [img.image.build_url(secure=True) for img in images]
 
+    # pass the CATEGORY_CHOICES into template
+    categories = Project.CATEGORY_CHOICES
+
     return render(request, 'firstapp/index.html', {
         'reviewss': reviewss,
         'hero_images': hero_image_urls,  # Pass only the URLs
-        'projects': projects
+        'projects': projects,
+        'categories':   categories,
     })
 
 # Live webpage uptime update for render keep awake
