@@ -31,45 +31,41 @@
   <link rel="stylesheet" href="{% static 'emoji_overlay/style.css' %}">
 </head>
 <body>
-
-  <button id="toggleEmojiFx" style="
-    position: fixed;
-    top: 100px;
-    right: 10px;
-    z-index: 10000;
-    padding: 6px 12px;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    ">
-    🎉 FX: ON
-  </button>
-
-  <!-- 👇 Emoji animation layer -->
-    <canvas id="emojiCanvas"></canvas>
-    <script src="{% static 'emoji_overlay/s.js' %}"></script>
+  
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
 
 
-{% block content %}
-<div id="hero-slider" class="hero-slider">
-  <!-- The background images will be dynamically set by JavaScript -->
+    
+    
+    <!-- beautiful on/off switch -->
+<div id="emojiToggleWrapper" style="position: fixed; top: 100px; right: 10px; z-index:10002;">
+  <label class="switch">
+    <input type="checkbox" id="toggleEmojiFx" />
+    <span class="slider"></span>
+  </label>
 </div>
+    
+{% block content %}
+  
+  
+  <div id="hero-slider" class="hero-slider">
+    <!-- The background images will be dynamically set by JavaScript -->
+  </div>
 {% endblock %}
 
+<!-- 👇 Emoji animation layer -->
+  <canvas id="emojiCanvas"></canvas>
+  <script src="{% static 'emoji_overlay/s.js' %}"></script>
 
-<!-- Preloader -->
-<div id="preloader">
-  <div class="loader-ring"></div>
-  <img src="{% static 'assets/img/logo.png' %}" />
-</div>
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
-
-
-
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
 
 <script>
@@ -79,6 +75,7 @@
   {% endfor %}
 ];
 </script>
+
 
 
 <!-- Vendor JS Files -->

@@ -1,13 +1,20 @@
-/**
-* Template Name: MyResume
-* Template URL: https://bootstrapmade.com/free-html-bootstrap-template-my-resume/
-* Updated: Jun 29 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
 (function() {
   "use strict";
+
+
+
+  // Spinner: keep it visible a bit longer, then hide with fade effect
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            if ($('#spinner').length > 0) {
+                $('#spinner').removeClass('show');
+            }
+        }, 1000); // 500ms delay after page load before hiding spinner
+    });
+
+
+
 
   /**
    * Header toggle
@@ -96,8 +103,13 @@
     });
   });
 
-  window.addEventListener('load', toggleScrollTop);
-  document.addEventListener('scroll', toggleScrollTop);
+  // Wait until spinner fades out before enabling scroll button logic
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      toggleScrollTop(); // Run once
+      document.addEventListener('scroll', toggleScrollTop); // Then listen
+    }, 1000); // Match spinner hide delay
+  });
 
   /**
    * Animation on scroll function and init
@@ -212,20 +224,23 @@
   /**
    * Correct scrolling position upon page load for URLs containing hash links.
    */
-  window.addEventListener('load', function(e) {
-    if (window.location.hash) {
-      if (document.querySelector(window.location.hash)) {
-        setTimeout(() => {
-          let section = document.querySelector(window.location.hash);
-          let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
-          window.scrollTo({
-            top: section.offsetTop - parseInt(scrollMarginTop),
-            behavior: 'smooth'
-          });
-        }, 100);
-      }
+  window.addEventListener('load', function () {
+  const navType = performance.getEntriesByType("navigation")[0]?.type;
+
+  // Only scroll manually if it's a fresh visit (not refresh or back/forward)
+  if (navType === 'navigate' && window.location.hash) {
+    const section = document.querySelector(window.location.hash);
+    if (section) {
+      setTimeout(() => {
+        const scrollMarginTop = parseInt(getComputedStyle(section).scrollMarginTop) || 35;
+        window.scrollTo({
+          top: section.offsetTop - scrollMarginTop,
+          behavior: 'smooth'
+        });
+      }, 300); // Delay slightly to let layout settle
     }
-  });
+  }
+});
 
 
 //   document.addEventListener("DOMContentLoaded", function () {
@@ -353,71 +368,53 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Landing Page Contact Form
+document.getElementById('contact-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  
+  const form = e.target;
+  const data = new FormData(form);
+  const statusEl = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+  const btnText   = document.getElementById('btn-text');
+  const btnSpinner= document.getElementById('btn-spinner');
 
-  document.getElementById('contact-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const data = new FormData(form);
-    const statusEl = document.getElementById('form-status');
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = document.getElementById('btn-text');
-    const btnSpinner = document.getElementById('btn-spinner');
+  // Enter sending state
+  submitBtn.disabled = true;
+  submitBtn.classList.add('sending');
+  statusEl.classList.remove('hidden');
+  statusEl.textContent = "";  
+  btnSpinner.classList.remove('hidden');
 
-    // Prepare UI
-    statusEl.classList.remove('hidden');
-    statusEl.textContent = "";
-    submitBtn.disabled = true;
-    btnText.textContent = "Sending...";
-    btnSpinner.classList.remove('hidden');
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST', body: data, headers: {'Accept':'application/json'}
+    });
 
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        statusEl.textContent = "Message sent successfully!";
-        statusEl.style.color = "green";
-        form.reset();
-      } else {
-        const result = await response.json();
-        statusEl.textContent = result.errors ? result.errors.map(e => e.message).join(", ") : "Oops! Something went wrong.";
-        statusEl.style.color = "red";
-      }
-    } catch (error) {
-      statusEl.textContent = "Network error. Please try again.";
+    if (response.ok) {
+      statusEl.textContent = "Message sent successfully!";
+      statusEl.style.color = "green";
+      btnText.textContent = "Sent!";
+    } else {
+      const result = await response.json();
+      statusEl.textContent = result.errors
+        ? result.errors.map(e => e.message).join(", ")
+        : "Oops! Something went wrong.";
       statusEl.style.color = "red";
+      btnText.textContent = "Failed";
     }
+  } catch (error) {
+    statusEl.textContent = "Network error. Please try again.";
+    statusEl.style.color = "red";
+    btnText.textContent = "Failed";
+  }
 
-    // Restore UI
-    setTimeout(() => {
-      statusEl.classList.add('hidden');
-    }, 5000);
+  // After 5s hide status
+  setTimeout(() => statusEl.classList.add('hidden'), 5000);
 
-    submitBtn.disabled = false;
-    btnText.textContent = "Send Message";
-    btnSpinner.classList.add('hidden');
-  });
-
-
-  document.querySelectorAll('.navbar-nav .nav-link[href^="#"]').forEach(link => {
-  link.addEventListener('click', function (e) {
-    const targetId = this.getAttribute('href');
-    const target = document.querySelector(targetId);
-
-    if (!target) return;
-
-    e.preventDefault();
-
-    target.scrollIntoView({ behavior: 'smooth' });
-
-    // Update the URL hash manually
-    history.pushState(null, null, targetId);
-  });
+  // Exit sending state
+  submitBtn.disabled = false;
+  btnSpinner.classList.add('hidden');
+  submitBtn.classList.remove('sending');
+  // Restore the default text (optional, e.g. “Send”) after some delay:
+  setTimeout(() => btnText.textContent = "Send", 1000);
 });

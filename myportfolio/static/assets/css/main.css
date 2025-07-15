@@ -92,6 +92,80 @@ h6 {
   font-family: var(--heading-font);
 }
 
+
+/* Contact Send Button */ 
+.contact-btn {
+  font-family: inherit;
+  font-size: 20px;
+  background: royalblue;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.contact-btn span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+.contact-btn svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* only hover-animate when NOT in .sending state */
+.contact-btn:not(.sending):hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+.contact-btn:not(.sending):hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+.contact-btn:not(.sending):hover span {
+  transform: translateX(5em);
+}
+
+/* keep the text hidden while .sending is present */
+.contact-btn.sending span {
+  transform: translateX(5em) !important;
+}
+
+.contact-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+.spinner-cbtn { 
+  display: inline-block;
+  margin-left: .5em;
+  width: 1em; height: 1em;
+  animation: spin 1s linear infinite;
+}
+.hidden { display: none !important; }
+
+/* simple spin animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
 /* Email Form Messages
 ------------------------------*/
 
@@ -104,6 +178,20 @@ h6 {
   
 #form-status.hidden {
     opacity: 0;
+}
+
+
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
 }
 
 
@@ -130,60 +218,6 @@ h6 {
 }
 
     
-    
-    
-    
-/* 
-.php-email-form .error-message {
-  display: none;
-  background: #df1529;
-  color: #ffffff;
-  text-align: left;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.php-email-form .sent-message {
-  display: none;
-  color: #ffffff;
-  background: #059652;
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.php-email-form .loading {
-  display: none;
-  background: var(--surface-color);
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-}
-
-.php-email-form .loading:before {
-  content: "";
-  display: inline-block;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin: 0 10px -6px 0;
-  border: 3px solid var(--accent-color);
-  border-top-color: var(--surface-color);
-  animation: php-email-form-loading 1s linear infinite;
-}
-
-@keyframes php-email-form-loading {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-} */
-
 /*--------------------------------------------------------------
 # Global Header
 --------------------------------------------------------------*/
@@ -221,10 +255,6 @@ h6 {
   left: auto;
 }
 
-/* Hover Effect for Hamburger */
-/* .header-toggle:hover {
-  background-color: color-mix(in srgb, var(--accent-color) 90%, white 15%);
-} */
 
 /* Ensure Navmenu is visible on Desktop */
 @media (min-width: 1200px) {
@@ -431,70 +461,6 @@ h6 {
   font-size: 13px;
   padding-top: 5px;
 }
-
-/*--------------------------------------------------------------
-# Preloader
---------------------------------------------------------------*/
-#preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white; /* or your preferred background */
-}
-
-.loader-ring {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #0563bb;
-  border-radius: 50%;
-  animation: spin 2s linear infinite;
-}
-
-
-#preloader img {
-  height: 60px;
-  width: 60px;
-  z-index: 1;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-
-/* #preloader:before {
-  content: "";
-  position: fixed;
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  border: 6px solid #ffffff;
-  border-color: var(--accent-color) transparent var(--accent-color) transparent;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: animate-preloader 1.5s linear infinite;
-}
-
-@keyframes animate-preloader {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-} */
 
 
 
@@ -1308,8 +1274,24 @@ section,
 /*--------------------------------------------------------------
 # Portfolio Details Section
 --------------------------------------------------------------*/
+/* Swiper Slide Image Styling */
+.portfolio-details-slider .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100%; /* ✅ ensures slide fills its container */
+  background-color: #f9f9f9;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: height 0.3s ease;
+}
+
 .portfolio-details .portfolio-details-slider img {
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block; /* Prevents extra space below image */
 }
 
 .portfolio-details .swiper-wrapper {
@@ -1340,6 +1322,13 @@ section,
 .portfolio-details .swiper-button-next:hover:after {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+@media (max-width: 768px) {
+  .portfolio-details-slider .swiper-slide {
+    height: 250px;
+  }
+}
+
 
 @media (max-width: 575px) {
 

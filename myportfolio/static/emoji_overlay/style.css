@@ -1,9 +1,58 @@
+
+.switch input[type="checkbox"] {
+  display: none;
+}
+
+.slider {
+  background-color: #ffffff2b;
+  border-radius: 100px;
+  padding: 1px;
+  cursor: pointer;
+  transition: box-shadow 0.2s cubic-bezier(0.4,0,0.2,1), background-color 0.2s;
+  position: relative;
+  display: block;
+  width: 51px;
+  height: 29px;
+  box-shadow:
+    rgba(0,0,0,0.62) 0px 0px 5px inset,
+    rgba(0,0,0,0.21) 0px 0px 0px 24px inset,
+    #22cc3f 0px 0px 0px 0px inset,
+    rgba(224,224,224,0.45) 0px 1px 0px 0px;
+}
+
+.slider::after {
+  content: "";
+  position: absolute;
+  top: 2.3px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background-color: #e3e3e3;
+  border-radius: 50%;
+  box-shadow: rgba(0,0,0,0.3) 0px 6px 6px;
+  transition: left 300ms cubic-bezier(0.4,0,0.2,1), background-color 300ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.switch input[type="checkbox"]:checked + .slider {
+  background-color: #0563bb;
+  box-shadow:
+    rgba(0,0,0,0.62) 0px 0px 5px inset,
+    #0563bb 0px 0px 0px 2px inset,   /* thin inner border */
+    #0563bb 0px 0px 0px 24px inset,  /* outer glow */
+    rgba(224,224,224,0.45) 0px 1px 0px 0px;
+}
+
+/* And (optionally) make the knob itself change color too */
+.switch input[type="checkbox"]:checked + .slider::after {
+  background-color: #e3e3e3;  /* leave the knob light, or use a darker shade */
+  left: 24px;
+}
+
+/* ensure canvas covers screen and doesn’t block clicks */
 #emojiCanvas {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  pointer-events: none; /* So it doesn't block clicks */
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 10001;
 }
