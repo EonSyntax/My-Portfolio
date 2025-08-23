@@ -21,7 +21,6 @@ class Review_Section(models.Model):
         return self.first_name + ' ' + self.last_name
     
 
-
     class Meta:
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'

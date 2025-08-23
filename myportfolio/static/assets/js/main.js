@@ -7,10 +7,12 @@
   // Spinner: keep it visible a bit longer, then hide with fade effect
     window.addEventListener('load', function () {
         setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
+            const spinner = document.getElementById('spinner');
+            if (spinner) {
+                spinner.classList.add('hide'); // fade out loader
+                document.body.classList.remove('no-scroll'); // enable scrolling
             }
-        }, 1000); // 500ms delay after page load before hiding spinner
+        }, 3000);
     });
 
 
@@ -90,26 +92,34 @@
    */
   let scrollTop = document.querySelector('.scroll-top');
 
-  function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
+function toggleScrollTop() {
+  if (scrollTop) {
+    window.scrollY > 100 
+      ? scrollTop.classList.add('active') 
+      : scrollTop.classList.remove('active');
   }
-  scrollTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
+}
 
-  // Wait until spinner fades out before enabling scroll button logic
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      toggleScrollTop(); // Run once
-      document.addEventListener('scroll', toggleScrollTop); // Then listen
-    }, 1000); // Match spinner hide delay
+scrollTop.addEventListener('click', (e) => {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
   });
+});
+
+// Enable scroll button only after spinner hides
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    // Run once in case user has already scrolled
+    toggleScrollTop();
+    // Start listening to scroll events
+    document.addEventListener('scroll', toggleScrollTop);
+  }, 3200); // slightly longer than spinner hide delay (3.2s)
+});
+
+
+
 
   /**
    * Animation on scroll function and init
